@@ -8,9 +8,9 @@ import { Loader } from './';
 
 const commonStyles = "min-h-[70px] sm:px-0 px-2 sm:min-w-[120px] flex justify-center items-center border-[0.5px] border-gray-400 text-sm font-light text-white";
 
-const Input = ({placeHolder, name, type, value, handleChange}) => (
+const Input = ({placeholder, name, type, value, handleChange}) => (
     <input
-        placeHolder = {placeHolder}
+        placeholder = {placeholder}
         type={type}
         step="0.0001"
         value={value}
@@ -20,49 +20,53 @@ const Input = ({placeHolder, name, type, value, handleChange}) => (
 );
 
 const Welcome = () => {
-    const { value } = useContext(TransactionContext);
+    const { connectWallet, currentAccount, formData, sendTransaction, handleChange } = useContext(TransactionContext);
 
-    console.log(value);
-    
-    const connectWallet = () => {
+    const handleSubmit = (e) => {
+        // set values equal to formData
+        const { addressTo, amount, keyword, message } = formData;
+        // prevent page from reloading
+        e.preventDefault();
+        // check if user has filled in the fields 
+        if(!addressTo || !amount || !keyword || !message) return; 
 
-    }
-
-    const handleSubmit = () => {
-
+        // if user has filled out form completely, call sendTransaction()
+        sendTransaction();
     }
 
     return (
-        <div className="flex w-full justify-center">
+        <div className="flex w-full justify-center items-center">
             <div className="flex mf:flex-row flex-col items-start justify-between md:p-20 py-12 px-4">
-                <div className="flex flex-1 justify-start flex-col mf:mr-10">
+                <div className="flex flex-1 justify-start items-start flex-col mf:mr-10">
                     <h1 className="text-3xl sm:text-5xl text-white text-gradient py-1">
                         Send Crypto <br /> across the world
                     </h1>
                     <p className="text-left mt-5 text-white font-light md:w-9/12 w-11/12 text-base">
                         Join the movement. Buy and sell cryptocurrencies easily on Krypto.
                     </p>
-                    <button 
+                    {!currentAccount && (
+                        <button 
                         type="button"
                         //calls connectWallet function when clicked
                         onClick={connectWallet} 
                         className="flex flex-row justify-center items-center my-5 bg-[#2952e3] p-3 rounded-full cursor-pointer hover:bg-[#2546bd]"
-                    >
+                        >
                         <p className="text-white text-base font-semibold">Connect Wallet</p>
-                    </button>
+                        </button>
+                    )}
                     {/* div that serves as a grid for all features */}
                     <div className="grid sm:grid-cols-3 grid-cols 2 w-full mt-10">
                         <div className={`rounded-tl-2xl ${commonStyles}`}>
                             Reliability
                         </div>
-                        <div className={commonStyles}>Security</div>
-                        <div className={`rounded-tr-2xl ${commonStyles}`}>
+                        <div className={ commonStyles }>Security</div>
+                        <div className={`sm:rounded-tr-2xl ${commonStyles}`}>
                             Ethereum
                         </div>
-                        <div className={`rounded-bl-2xl ${commonStyles}`}>
+                        <div className={`sm:rounded-bl-2xl ${commonStyles}`}>
                             WEB 3.0
                         </div>
-                        <div className={commonStyles}>Low fees</div>
+                        <div className={ commonStyles }>Low fees</div>
                         <div className={`rounded-br-2xl ${commonStyles}`}>
                             Blockchain
                         </div>
@@ -70,7 +74,7 @@ const Welcome = () => {
                 </div>
 
                 <div className="flex flex-col flex-1 items-center justify-start w-full mf:mt-0 mt-10">
-                    <div className="p-3 justify-end items-start flex-col rounded-xl h-40 sm:w-72 w-full my-5 eth-card white-glassmorphism">
+                    <div className="p-3  flex justify-end items-start flex-col rounded-xl h-40 sm:w-72 w-full my-5 eth-card .white-glassmorphism">
                         <div className="flex justify-between flex-col w-full h-full">
                             <div className="flex justify-between items-start">
                                 <div className="w-10 h-10 rounded-full border-2 border-white flex justify-center items-center">
@@ -91,10 +95,10 @@ const Welcome = () => {
 
                     <div className="p-5 sm:w-96 w-full flex flex-col justify-start items-center blue-glassmorphism">
 
-                    <Input placeHolder="Address To" name="addressTo" type="text" handleChange={() => {}} />
-                    <Input placeHolder="Amount (ETH)" name="amount" type="number" handleChange={() => {}} />
-                    <Input placeHolder="Keyword (Gif)" name="keyword" type="text" handleChange={() => {}} />
-                    <Input placeHolder="Enter Message" name="message" type="text" handleChange={() => {}} />
+                    <Input placeHolder="Address To" name="addressTo" type="text" handleChange={handleChange} />
+                    <Input placeHolder="Amount (ETH)" name="amount" type="number" handleChange={handleChange} />
+                    <Input placeHolder="Keyword (Gif)" name="keyword" type="text" handleChange={handleChange} />
+                    <Input placeHolder="Enter Message" name="message" type="text" handleChange={handleChange} />
                     <div className="h-[1px] w-full bg-gray-400 my-2"/>
 
                     {false ? (
@@ -108,9 +112,7 @@ const Welcome = () => {
                             Send Now
                         </button>
                     )}
-                    
                     </div>
-
                 </div>
             </div>
         </div>
