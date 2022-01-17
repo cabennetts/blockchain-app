@@ -3,7 +3,7 @@
 // plugin to build smart contract tests
 require('@nomiclabs/hardhat-waffle');
 
-
+// used to export hardhat config
 module.exports = {
   solidity: '0.8.0', 
   networks: {
