@@ -29,9 +29,9 @@ contract Transactions {
     * @param receiver, amount, message, timestamp, keyword
     */
     function addToBlockchain( address payable receiver, uint amount, string memory message, string memory keyword)  public{
-        // MAIN PART OF SMART CONTRACT
+        // increments count when called
         transactionCount += 1;
-        // adding transaction to list of all transactions *NOT ACTUALLY MAKING TRANSFER*
+        // adding transaction to array of all transactions *NOT ACTUALLY MAKING TRANSFER*
         transactions.push(TransferStruct(msg.sender, receiver, amount, message, block.timestamp, keyword));
         // emmiting the Transfer, transfers the amount 
         emit Transfer(msg.sender, receiver, amount, message, block.timestamp, keyword);
